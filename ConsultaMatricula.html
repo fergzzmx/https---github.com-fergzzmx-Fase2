@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Información del Estudiante</title>
+<style>
+    /* Estilos CSS */
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+    #contenedor {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+    #inputMatricula {
+        padding: 8px;
+        font-size: 16px;
+    }
+    button {
+        padding: 8px 16px;
+        font-size: 16px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        cursor: pointer;
+    }
+    button:hover {
+        background-color: #45a049;
+    }
+    #infoEstudiante {
+        display: none;
+        margin-top: 20px;
+    }
+    h2 {
+        margin-top: 0;
+    }
+    p {
+        margin: 0 0 10px;
+    }
+</style>
+</head>
+<body>
+<div id="contenedor">
+    <!-- Campo de búsqueda -->
+    <p>Ingresa el número de matrícula:</p>
+    <input type="text" id="inputMatricula">
+    <button onclick="mostrarInfo()">Ingresar</button>
+
+    <!-- Contenedor para la información del estudiante -->
+    <div id="infoEstudiante">
+        <h2>Información del Estudiante</h2>
+        <p><strong>Nombre:</strong> <span id="nombre"></span></p>
+        <p><strong>Grupo:</strong> <span id="grupo"></span></p>
+        <p><strong>Carrera:</strong> <span id="carrera"></span></p>
+        <p><strong>Turno:</strong> <span id="turno"></span></p>
+        <button onclick="actualizarInfo()">Actualizar Información</button>
+    </div>
+</div>
+
+<script>
+    // Datos de los estudiantes
+    const estudiantes = {
+        "2507168": {
+            nombre: "Fernando Addi",
+            grupo: "A",
+            carrera: "Desarrollo de Software",
+            turno: "Mañana"
+        },
+        "2507169": {
+            nombre: "María García",
+            grupo: "B",
+            carrera: "Administración de Empresas",
+            turno: "Tarde"
+        },
+        "2507170": {
+            nombre: "Carlos Rodríguez",
+            grupo: "C",
+            carrera: "Psicología",
+            turno: "Noche"
+        }
+        // Agrega más datos según sea necesario
+    };
+
+    // Función para mostrar la información del estudiante
+    function mostrarInfo() {
+        const matricula = document.getElementById("inputMatricula").value.trim();
+        const estudiante = estudiantes[matricula];
+        if (estudiante) {
+            document.getElementById("nombre").textContent = estudiante.nombre;
+            document.getElementById("grupo").textContent = estudiante.grupo;
+            document.getElementById("carrera").textContent = estudiante.carrera;
+            document.getElementById("turno").textContent = estudiante.turno;
+            document.getElementById("infoEstudiante").style.display = "block";
+        } else {
+            alert("Matrícula no encontrada.");
+        }
+    }
+
+    // Función para actualizar la información del estudiante
+    function actualizarInfo() {
+        const matricula = document.getElementById("inputMatricula").value.trim();
+        const estudiante = estudiantes[matricula];
+        if (estudiante) {
+            const nuevoNombre = prompt("Ingrese el nuevo nombre:", estudiante.nombre);
+            const nuevoGrupo = prompt("Ingrese el nuevo grupo:", estudiante.grupo);
+            const nuevaCarrera = prompt("Ingrese la nueva carrera:", estudiante.carrera);
+            const nuevoTurno = prompt("Ingrese el nuevo turno:", estudiante.turno);
+
+            if (nuevoNombre && nuevoGrupo && nuevaCarrera && nuevoTurno) {
+                // Actualizar los datos del estudiante
+                estudiantes[matricula] = {
+                    nombre: nuevoNombre,
+                    grupo: nuevoGrupo,
+                    carrera: nuevaCarrera,
+                    turno: nuevoTurno
+                };
+                // Actualizar la información mostrada en la página
+                document.getElementById("nombre").textContent = nuevoNombre;
+                document.getElementById("grupo").textContent = nuevoGrupo;
+                document.getElementById("carrera").textContent = nuevaCarrera;
+                document.getElementById("turno").textContent = nuevoTurno;
+                alert("Información actualizada correctamente.");
+            } else {
+                alert("Todos los campos son requeridos.");
+            }
+        } else {
+            alert("Matrícula no encontrada.");
+        }
+    }
+</script>
+</body>
+</html>

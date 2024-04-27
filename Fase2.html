@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Validación de Matrícula y Registro de Tareas</title>
+<style>
+/* Estilos CSS */
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    background-color: #f5f5f5;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+form {
+    margin-top: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+input[type="text"],
+input[type="password"],
+textarea,
+select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 16px;
+}
+
+input[type="submit"] {
+    background-color: #4caf50;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+input[type="submit"]:hover {
+    background-color: #45a049;
+}
+
+.message {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.message.alert {
+    color: #f00;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+tr:hover {
+    background-color: #ddd;
+}
+
+.hidden {
+    display: none;
+}
+
+#seccion-cambios {
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+#otro-script-btn {
+    background-color: #4CAF50; /* Color de fondo */
+    color: white; /* Color del texto */
+    padding: 10px 20px; /* Espaciado interno */
+    border: none; /* Sin borde */
+    border-radius: 5px; /* Bordes redondeados */
+    cursor: pointer; /* Cambio de cursor al pasar el ratón */
+    font-size: 16px; /* Tamaño de fuente */
+    transition: background-color 0.3s; /* Transición suave */
+}
+
+</style>
+</head>
+<body>
+<div class="container" id="login-container">
+    <h1>Ingresa tu Matrícula</h1>
+
+    <form id="login-form">
+        <div class="form-group">
+            <label for="matricula">Matrícula:</label>
+            <input type="text" id="matricula" name="matricula" required>
+        </div>
+        <div class="form-group">
+            <label for="contrasena">Contraseña:</label>
+            <input type="password" id="contrasena" name="contrasena" required>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Iniciar Sesión">
+        </div>
+    </form>
+
+    <div id="message" class="message"></div>
+</div>
+
+<div class="container hidden" id="second-window">
+    <h1>Registro de Tareas</h1>
+
+
+
+
+    <!-- Formulario para registrar una nueva tarea -->
+    <form id="nueva-tarea-form">
+        <div class="form-group">
+            <label for="codigo-tarea">Código de la tarea (ID):</label>
+            <input type="text" id="codigo-tarea" name="codigo-tarea" required>
+        </div>
+        <div class="form-group">
+            <label for="titulo-tarea">Título de la tarea:</label>
+            <input type="text" id="titulo-tarea" name="titulo-tarea" required>
+        </div>
+        <div class="form-group">
+            <label for="descripcion-tarea">Descripción de la tarea:</label>
+            <textarea id="descripcion-tarea" name="descripcion-tarea" rows="4" required></textarea>
+        </div>
+        <div class="form-group">
+            <label for="fecha-inicio">Fecha de inicio:</label>
+            <input type="date" id="fecha-inicio" name="fecha-inicio" required>
+        </div>
+        <div class="form-group">
+            <label for="nombre-cliente">Nombre del cliente:</label>
+            <input type="text" id="nombre-cliente" name="nombre-cliente" required>
+        </div>
+        <div class="form-group">
+            <label for="id-proyecto">ID del proyecto:</label>
+            <input type="text" id="id-proyecto" name="id-proyecto" required>
+        </div>
+        <div class="form-group">
+            <label for="comentarios">Sección de comentarios:</label>
+            <textarea id="comentarios" name="comentarios" rows="4"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="estatus">Estatus:</label>
+            <select id="estatus" name="estatus">
+                <option value="Por hacer" selected>Por hacer</option>
+                <option value="En progreso">En progreso</option>
+                <option value="Completado">Completado</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Registrar Tarea">
+            <button id="otro-script-btn">Consulta de Matricula</button>
+        </div>
+    </form>
+
+    <div id="message" class="message"></div>
+
+    <!-- Tabla para mostrar las tareas registradas -->
+    <table id="tareas-table">
+        <thead>
+            <tr>
+                <th>Código de Tarea</th>
+                <th>Título</th>
+                <th>Descripción</th>
+                <th>Fecha de Inicio</th>
+                <th>Cliente</th>
+                <th>ID del Proyecto</th>
+                <th>Comentarios</th>
+                <th>Estatus</th>
+            </tr>
+        </thead>
+        <tbody id="tareas-body">
+            <!-- Aquí se llenarán las tareas registradas -->
+        </tbody>
+    </table>
+
+    <!-- Sección de Cambios para consulta de datos -->
+    <div id="seccion-cambios" class="hidden">
+        <h2>Detalles de la Tarea</h2>
+        <form id="formulario-tarea">
+            <label for="estatus">Estatus:</label>
+            <select id="estatus">
+                <option value="Por hacer">Por hacer</option>
+                <option value="En progreso">En progreso</option>
+                <option value="Completado">Completado</option>
+            </select>
+            <label for="nuevo-comentario">Nuevo Comentario:</label>
+            <textarea id="nuevo-comentario"></textarea>
+            <button type="button" id="actualizar">Actualizar</button>
+        </form>
+    </div>
+</div>
+
+
+<script>
+// Objeto para almacenar las tareas registradas
+const tareasRegistradas = [];
+
+// Función para registrar una nueva tarea
+function registrarTarea(event) {
+    event.preventDefault(); // Evitar el envío del formulario por defecto
+
+    // Obtener valores de los campos del formulario
+    const codigoTarea = document.getElementById("codigo-tarea").value;
+    const tituloTarea = document.getElementById("titulo-tarea").value;
+    const descripcionTarea = document.getElementById("descripcion-tarea").value;
+    const fechaInicio = document.getElementById("fecha-inicio").value;
+    const nombreCliente = document.getElementById("nombre-cliente").value;
+    const idProyecto = document.getElementById("id-proyecto").value;
+    const comentarios = document.getElementById("comentarios").value;
+    const estatus = document.getElementById("estatus").value;
+
+    // Validar que no haya campos vacíos
+    if (!codigoTarea || !tituloTarea || !descripcionTarea || !fechaInicio || !nombreCliente || !idProyecto) {
+        mostrarMensaje("Por favor, completa todos los campos.", "alert");
+        return;
+    }
+
+    // Crear objeto con la información de la tarea
+    const nuevaTarea = {
+        codigoTarea,
+        tituloTarea,
+        descripcionTarea,
+        fechaInicio,
+        nombreCliente,
+        idProyecto,
+        comentarios,
+        estatus
+    };
+
+    // Agregar la nueva tarea al arreglo de tareas registradas
+    tareasRegistradas.push(nuevaTarea);
+
+    // Limpiar los campos del formulario
+    document.getElementById("nueva-tarea-form").reset();
+
+    // Mostrar mensaje de éxito
+    mostrarMensaje("Tarea registrada correctamente.", "success");
+
+    // Actualizar la tabla de tareas
+    actualizarTablaTareas();
+}
+
+// Función para mostrar mensajes en la página
+function mostrarMensaje(message, type) {
+    const messageElement = document.getElementById("message");
+    messageElement.textContent = message;
+
+    if (type === "alert") {
+        messageElement.classList.add("alert");
+    } else if (type === "success") {
+        messageElement.classList.remove("alert");
+    }
+}
+
+// Función para actualizar la tabla de tareas
+function actualizarTablaTareas() {
+    const tbody = document.getElementById("tareas-body");
+    tbody.innerHTML = ""; // Limpiar contenido actual de la tabla
+
+    // Recorrer el arreglo de tareas registradas y agregar cada tarea a la tabla
+    tareasRegistradas.forEach(tarea => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+            <td>${tarea.codigoTarea}</td>
+            <td>${tarea.tituloTarea}</td>
+            <td>${tarea.descripcionTarea}</td>
+            <td>${tarea.fechaInicio}</td>
+            <td>${tarea.nombreCliente}</td>
+            <td>${tarea.idProyecto}</td>
+            <td>${tarea.comentarios}</td>
+            <td>${tarea.estatus}</td>
+        `;
+        tbody.appendChild(row);
+    });
+}
+
+// Función para mostrar los detalles de una tarea en una ventana emergente
+function mostrarDetallesTarea(tarea) {
+    const detallesVentana = window.open("", "Detalles de la Tarea", "width=600,height=400");
+    detallesVentana.document.write(`
+        <h2>Detalles de la Tarea</h2>
+        <ul>
+            <li><strong>Código de Tarea:</strong> ${tarea.codigoTarea}</li>
+            <li><strong>Título:</strong> ${tarea.tituloTarea}</li>
+            <li><strong>Descripción:</strong> ${tarea.descripcionTarea}</li>
+            <li><strong>Fecha de Inicio:</strong> ${tarea.fechaInicio}</li>
+            <li><strong>Cliente:</strong> ${tarea.nombreCliente}</li>
+            <li><strong>ID del Proyecto:</strong> ${tarea.idProyecto}</li>
+            <li><strong>Comentarios:</strong> ${tarea.comentarios}</li>
+            <li><strong>Estatus:</strong> ${tarea.estatus}</li>
+        </ul>
+    `);
+}
+
+
+// Manejador del evento submit del formulario de nueva tarea
+document.getElementById("nueva-tarea-form").addEventListener("submit", registrarTarea);
+
+// Objeto para registrar matrículas a nombres y contraseñas
+const matriculasNombresContraseñas = {
+            "2507168": {
+                nombre: "Fernando Addi",
+                contraseña: "2024"
+            },
+            "2507169": {
+                nombre: "Maria Gonzalez",
+                contraseña: "2025"
+            }
+            // Agrega más matrículas y nombres según sea necesario
+        };
+
+// Función para validar las credenciales del alumno
+function validarCredenciales() {
+    const matricula = document.getElementById("matricula").value;
+    const contraseña = document.getElementById("contrasena").value;
+
+    if (matriculasNombresContraseñas.hasOwnProperty(matricula)) {
+        // Matrícula válida, verificar la contraseña
+        const datosAlumno = matriculasNombresContraseñas[matricula];
+        if (contraseña === datosAlumno.contraseña) {
+            // Contraseña válida, mostrar la segunda ventana y ocultar la primera
+            alert ("¡Inicio de sesión exitoso! Bienvenido, " + datosAlumno.nombre, "success");
+            document.getElementById("login-container").classList.add("hidden");
+            document.getElementById("second-window").classList.remove("hidden");
+            return true;
+        } else {
+            // Contraseña incorrecta, mostrar un mensaje de error
+            mostrarMensaje("Matricula incorrecta. Por favor, inténtalo de nuevo.", "alert");
+        }
+    } 
+    return false;
+}
+
+// Manejador del evento submit del formulario
+document.getElementById("login-form").addEventListener("submit", function(event) {
+    event.preventDefault(); // Evitar el envío del formulario por defecto
+
+    validarCredenciales();
+});
+
+document.getElementById("otro-script-btn").addEventListener("click", function() {
+    window.location.href = "ConsultaMatricula.html"; // Redirige al otro script
+});
+
+// Llamar a validarCredenciales() al cargar la página
+validarCredenciales();
+</script>
+</body>
+</html>
